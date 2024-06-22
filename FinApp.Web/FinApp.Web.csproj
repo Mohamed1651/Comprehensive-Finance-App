@@ -6,9 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="financial-app\src\assets\" />
-    <Folder Include="financial-app\src\pages\" />
-  </ItemGroup>
-
 </Project>
