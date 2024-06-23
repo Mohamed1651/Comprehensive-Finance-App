@@ -1,37 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { FC } from 'react'
 import './App.css'
+import { Route } from './interfaces/Route'
+import Home from './pages/Home'
+import Router from './components/routing/Router'
+import Link from './components/routing/Link'
+import About from './pages/About'
 
-function App() {
-    const [count, setCount] = useState(0)
+const routes: Route[] = [
+    { path: '/', component: Home },
+    { path: '/about', component: About }
+]
 
+const App: FC = () => {
     return (
         <>
-            <div>
-                <a href="https://vitejs.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo" />
-                </a>
-                <a href="https://react.dev" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo" />
-                </a>
-            </div>
-            <h1>Vite + React</h1>
-            <h1 className="text-3xl font-bold underline">
-                Hello world!
-            </h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>
-                    count is {count}
-                </button>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more
-            </p>
-
+                <nav className="bg-gray-800">
+                    <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+                        <div className="relative flex h-16 items-center justify-between">
+                            <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                                <div className="flex flex-shrink-0 items-center">
+                                    <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" />
+                                </div>
+                                <div className="hidden sm:ml-6 sm:block">
+                                    <div className="flex space-x-4">
+                                        <Link to="/">Home</Link>
+                                        <Link to="/about">About</Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                <Router routes={routes}></Router>
         </>
     )
 }
