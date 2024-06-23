@@ -1,5 +1,5 @@
 ﻿import React, { FC } from 'react';
-import { LinkProps } from './interfaces/LinkProps'
+import { LinkProps } from '../../interfaces/LinkProps'
 
 const Link: FC<LinkProps> = ({ to, children }) => {
     const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -10,7 +10,7 @@ const Link: FC<LinkProps> = ({ to, children }) => {
     }
 
     return (
-        <a href={to} onClick={handleClick}>
+        <a className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" href={to} onClick={handleClick}>
             {children}
         </a>
     )

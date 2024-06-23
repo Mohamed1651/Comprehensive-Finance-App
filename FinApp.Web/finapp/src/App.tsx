@@ -14,22 +14,24 @@ const routes: Route[] = [
 const App: FC = () => {
     return (
         <>
-            <div>
-                <nav>
-                    <ul>
-                        <li>
-                            <Link to="/">Home</Link>
-                        </li>
-                        <li>
-                            <Link to="/about">About</Link>
-                        </li>
-                    </ul>
+                <nav className="bg-gray-800">
+                    <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+                        <div className="relative flex h-16 items-center justify-between">
+                            <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                                <div className="flex flex-shrink-0 items-center">
+                                    <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" />
+                                </div>
+                                <div className="hidden sm:ml-6 sm:block">
+                                    <div className="flex space-x-4">
+                                        <Link to="/">Home</Link>
+                                        <Link to="/about">About</Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </nav>
                 <Router routes={routes}></Router>
-            </div>
-            <h1 className="text-3xl font-bold underline">
-                Hello world!
-            </h1>
         </>
     )
 }
