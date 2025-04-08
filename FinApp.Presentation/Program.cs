@@ -1,10 +1,8 @@
-using ShinyCollectorPlatform.Presentation;
-using ShinyCollectorPlatform.Application;
-using ShinyCollectorPlatform.Application.Services;
-using ShinyCollectorPlatform.Domain.Entities;
-using ShinyCollectorPlatform.Domain.Interfaces;
-using ShinyCollectorPlatform.Infrastructure;
-using ShinyCollectorPlatform.Infrastructure.Repositories;
+using FinApp.Presentation;
+using FinApp.Application;
+using FinApp.Domain.Entities;
+using FinApp.Domain.Interfaces;
+using FinApp.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Google;
 
@@ -16,8 +14,8 @@ var configuration = builder.Configuration;
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IGenericService<Course>, CourseService>();
-builder.Services.AddScoped<IGenericRepository<Course>, CourseRepository>();
+//builder.Services.AddScoped<IGenericService<Course>, CourseService>();
+//builder.Services.AddScoped<IGenericRepository<Course>, CourseRepository>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection")));
 //builder.Services.AddAuthentication().AddGoogle(googleOptions =>
