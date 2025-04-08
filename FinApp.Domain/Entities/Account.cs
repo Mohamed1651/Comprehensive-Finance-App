@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FinApp.Domain.Interfaces
+namespace FinApp.Domain.Entities
 {
-    public interface IEntity
+    public class Account
     {
-        int Id { get; }
     }
 }

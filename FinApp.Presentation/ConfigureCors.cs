@@ -1,4 +1,4 @@
-﻿namespace ShinyCollectorPlatform.Presentation
+﻿namespace FinApp.Presentation
 {
     public static class ConfigureCors
     {

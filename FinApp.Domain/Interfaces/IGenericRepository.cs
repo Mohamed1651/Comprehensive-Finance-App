@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShinyCollectorPlatform.Domain.Interfaces
+namespace FinApp.Domain.Interfaces
 {
     public interface IGenericRepository<T> where T : IEntity
     {
