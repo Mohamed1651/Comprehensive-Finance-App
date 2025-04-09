@@ -1,4 +1,5 @@
 ﻿using FinApp.Domain.Enums;
+using FinApp.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FinApp.Domain.Entities
 {
-    public class Transaction
+    public class Transaction : IEntity
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Title { get; set; }
