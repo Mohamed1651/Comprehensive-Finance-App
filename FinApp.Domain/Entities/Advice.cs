@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FinApp.Domain.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FinApp.Domain.Entities
 {
-    public class Advice
+    public class Advice : IEntity
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Message { get; set; }

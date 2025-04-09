@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FinApp.Domain.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FinApp.Domain.Entities
 {
-    public class Report
+    public class Report : IEntity
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

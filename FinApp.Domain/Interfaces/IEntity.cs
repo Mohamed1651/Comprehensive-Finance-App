@@ -8,6 +8,6 @@ namespace FinApp.Domain.Interfaces
 {
     public interface IEntity
     {
-        int Id { get; }
+        Guid Id { get; set; }
     }
 }
