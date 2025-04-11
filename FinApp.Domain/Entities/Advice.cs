@@ -9,8 +9,9 @@ namespace FinApp.Domain.Entities
 {
     public class Advice : IEntity
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
         public string Message { get; set; }
         public DateTime Date { get; set; }
+        public int? ReportId { get; set; }
     }
 }

@@ -9,9 +9,11 @@ namespace FinApp.Domain.Entities
 {
     public class Budget : IEntity
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
         public double Amount { get; set; }
-        public Category Category { get; set; }
+        public int CategoryId { get; set;}
+        public int UserId { get; set; }
+        public Category? Category { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
     }

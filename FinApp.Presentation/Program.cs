@@ -1,16 +1,14 @@
 using FinApp.Presentation;
-using FinApp.Application;
 using FinApp.Domain.Entities;
 using FinApp.Domain.Interfaces;
 using FinApp.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Google;
-
+using Microsoft.Data.SqlClient;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 // Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -25,6 +23,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //    googleOptions.ClientSecret = configuration["GoogleOAuth:ClientSecret"];
 //});
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

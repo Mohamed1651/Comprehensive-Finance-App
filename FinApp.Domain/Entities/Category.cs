@@ -9,10 +9,10 @@ namespace FinApp.Domain.Entities
 {
     public class Category : IEntity
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
         public string Name { get; set; }
         public string ColorHex { get; set; }
-        public List<Transaction> Transactions { get; set; }
-        public Budget budget { get; set; }
+        public ICollection<CategoryTransaction> CategoryTransactions { get; set; } = new List<CategoryTransaction>();
+        public Budget Budget { get; set; }
     }
 }
