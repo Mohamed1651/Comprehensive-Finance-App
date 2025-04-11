@@ -10,10 +10,12 @@ namespace FinApp.Domain.Entities
 {
     public class Account : IEntity
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
         public string Name { get; set; }
         public AccountType AccountType { get; set; }
         public double Balance { get; set; }
-        public List<Transaction> Transactions { get; set; } = new List<Transaction>();
+        public int UserId { get; set; }
+        public User User { get; set; }
+        public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
     }
 }

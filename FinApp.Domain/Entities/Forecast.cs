@@ -9,7 +9,7 @@ namespace FinApp.Domain.Entities
 {
     public class Forecast : IEntity
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
         public DateTime Month {  get; set; }
         public double PredictedExpense { get; set; }
         public double PredictedIncome { get; set; }
