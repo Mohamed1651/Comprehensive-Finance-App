@@ -10,6 +10,7 @@ using FinApp.Application.Services;
 using FinApp.Infrastructure.Repositories;
 using FinApp.Presentation.Dtos;
 using FinApp.Presentation.Mappings;
+using FinApp.Presentation.Middleware;
 
 namespace FinApp.Presentation;
 public class Program
@@ -37,7 +38,7 @@ public class Program
             app.Logger.LogInformation($"Request {ctx.Request.Path}: {(DateTime.Now - start).TotalMilliseconds}");
         });
 
-        //app.UseExceptionHandler();
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         using (var scope = app.Services.CreateScope())
         {

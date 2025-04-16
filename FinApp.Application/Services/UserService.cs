@@ -1,5 +1,6 @@
 ﻿using FinApp.Application.Interfaces;
 using FinApp.Domain.Entities;
+using FinApp.Domain.Exceptions;
 using FinApp.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace FinApp.Application.Services
             var existingUser = await _userRepository.GetByIdAsync(value.Id);
             if (existingUser == null)
             {
-                throw new Exception($"User with ID {value.Id} not found.");
+                throw new UserNotFoundException($"User with ID {value.Id} not found.");
             }
 
             existingUser.Name = value.Name;
