@@ -28,31 +28,50 @@ namespace FinApp.Presentation.Controllers
             return Ok(userDtos);
         }
         // GET api/<UserController>/5
-/*        [HttpGet("{id}")]
-        public async Task<UserDto> Get(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserDto>> Get(int id)
         {
-            return await _userService.Get(id);
+            User user = await _userService.Get(id);
+            UserDto userDto = _mapper.Map<UserDto>(user);
+            return Ok(userDto);
         }
 
         // POST api/<UserController>
         [HttpPost]
-        public async Task Post([FromBody] UserDto value)
+        public async Task<ActionResult> Post([FromBody] UserDto value)
         {
-            await _userService.Post(value);
+            User user = _mapper.Map<User>(value);
+            await _userService.Post(user);
+            return Created();
         }
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] UserDto value)
+        public async Task<ActionResult> Put(int id, [FromBody] UserDto value)
         {
-            _userService.Put(value);
+            if (id != value.Id)
+            {
+                return BadRequest("The user ID in the path and body must match.");
+            }
+            User userToUpdate = _mapper.Map<User>(value);
+
+            var existingUser = await _userService.Get(id);
+
+            if (existingUser == null)
+            {
+                return NotFound($"User with ID {id} was not found.");
+            }
+            await _userService.Put(userToUpdate);
+
+            return NoContent();
         }
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            _userService.Delete(id);
-        }*/
+            await _userService.Delete(id);
+            return NoContent();
+        }
     }
 }

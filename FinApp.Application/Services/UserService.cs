@@ -34,7 +34,17 @@ namespace FinApp.Application.Services
 
         public async Task Put(User value)
         {
-            await _userRepository.UpdateAsync(value);
+            var existingUser = await _userRepository.GetByIdAsync(value.Id);
+            if (existingUser == null)
+            {
+                throw new Exception($"User with ID {value.Id} not found.");
+            }
+
+            existingUser.Name = value.Name;
+            existingUser.Email = value.Email;
+            existingUser.Password = value.Password;
+
+            await _userRepository.UpdateAsync(existingUser);
         }
         public async Task Delete(int id)
         {
