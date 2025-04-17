@@ -10,6 +10,7 @@ using FinApp.Application.Services;
 using FinApp.Infrastructure.Repositories;
 using FinApp.Presentation.Dtos;
 using FinApp.Presentation.Mappings;
+using FinApp.Presentation.Middleware;
 
 namespace FinApp.Presentation;
 public class Program
@@ -23,7 +24,7 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
-        builder.Services.AddScoped<IGenericService<User>, UserService>();
+        builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IGenericRepository<User>, UserRepository>();
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection")));
@@ -37,7 +38,7 @@ public class Program
             app.Logger.LogInformation($"Request {ctx.Request.Path}: {(DateTime.Now - start).TotalMilliseconds}");
         });
 
-        //app.UseExceptionHandler();
+        app.UseCustomExceptionHandler();
 
         using (var scope = app.Services.CreateScope())
         {

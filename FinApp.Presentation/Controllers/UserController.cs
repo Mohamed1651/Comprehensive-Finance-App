@@ -10,10 +10,10 @@ namespace FinApp.Presentation.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IGenericService<User> _userService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public UserController(IGenericService<User> userService, IMapper mapper)
+        public UserController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
             _mapper = mapper;
@@ -23,7 +23,7 @@ namespace FinApp.Presentation.Controllers
         [HttpGet]
         public async Task<ActionResult<UserDto>> Get()
         {
-            IEnumerable<User> user = await _userService.Get();
+            IEnumerable<User> user = await _userService.GetUsers();
             var userDtos = _mapper.Map<IEnumerable<UserDto>>(user);
             return Ok(userDtos);
         }
@@ -31,37 +31,28 @@ namespace FinApp.Presentation.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDto>> Get(int id)
         {
-            User user = await _userService.Get(id);
+            User user = await _userService.GetUser(id);
             UserDto userDto = _mapper.Map<UserDto>(user);
             return Ok(userDto);
         }
 
         // POST api/<UserController>
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] UserDto value)
+        public async Task<ActionResult> Post([FromBody] UserDto dto)
         {
-            User user = _mapper.Map<User>(value);
-            await _userService.Post(user);
+            User user = _mapper.Map<User>(dto);
+            await _userService.CreateUser(user);
             return Created();
         }
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] UserDto value)
+        public async Task<ActionResult> Put(int id, [FromBody] UserDto dto)
         {
-            if (id != value.Id)
-            {
-                return BadRequest("The user ID in the path and body must match.");
-            }
-            User userToUpdate = _mapper.Map<User>(value);
+            User userToUpdate = _mapper.Map<User>(dto);
+            userToUpdate.Id = id;
 
-            var existingUser = await _userService.Get(id);
-
-            if (existingUser == null)
-            {
-                return NotFound($"User with ID {id} was not found.");
-            }
-            await _userService.Put(userToUpdate);
+            await _userService.UpdateUser(userToUpdate);
 
             return NoContent();
         }
@@ -70,7 +61,7 @@ namespace FinApp.Presentation.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            await _userService.Delete(id);
+            await _userService.DeleteUser(id);
             return NoContent();
         }
     }
