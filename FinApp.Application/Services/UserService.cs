@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FinApp.Application.Services
 {
-    public class UserService : IGenericService<User>
+    public class UserService : IUserService
     {
         private readonly IGenericRepository<User> _userRepository;
         public UserService(IGenericRepository<User> userRepository) 
@@ -18,36 +18,36 @@ namespace FinApp.Application.Services
             _userRepository = userRepository;
         }
 
-        public Task<IEnumerable<User>> Get()
+        public Task<IEnumerable<User>> GetUsers()
         {
             return _userRepository.GetAllAsync();
         }
 
-        public async Task<User> Get(int id)
+        public async Task<User> GetUser(int id)
         {
             return await _userRepository.GetByIdAsync(id);
         }
 
-        public async Task Post(User value)
+        public async Task CreateUser(User user)
         {
-            await _userRepository.AddAsync(value);
+            await _userRepository.AddAsync(user);
         }
 
-        public async Task Put(User value)
+        public async Task UpdateUser(User user)
         {
-            var existingUser = await _userRepository.GetByIdAsync(value.Id);
+            var existingUser = await _userRepository.GetByIdAsync(user.Id);
             if (existingUser == null)
             {
-                throw new UserNotFoundException($"User with ID {value.Id} not found.");
+                throw new UserNotFoundException($"User with ID {user.Id} not found.");
             }
 
-            existingUser.Name = value.Name;
-            existingUser.Email = value.Email;
-            existingUser.Password = value.Password;
+            existingUser.Name = user.Name;
+            existingUser.Email = user.Email;
+            existingUser.Password = user.Password;
 
             await _userRepository.UpdateAsync(existingUser);
         }
-        public async Task Delete(int id)
+        public async Task DeleteUser(int id)
         {
             var user = await _userRepository.GetByIdAsync(id);
             await _userRepository.DeleteAsync(user);

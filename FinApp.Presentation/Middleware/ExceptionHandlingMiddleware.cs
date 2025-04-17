@@ -38,13 +38,18 @@ namespace FinApp.Presentation.Middleware
                 code = HttpStatusCode.BadRequest;
             }
 
+            if (ex is UserNotFoundException)
+            {
+                code = HttpStatusCode.NotFound;
+            }
+
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = (int)code;
 
             var errorResponse = new
             {
                 StatusCode = httpContext.Response.StatusCode,
-                Message = ex is DomainException ? ex.Message : "An unexpected error occurred. Please try again later."
+                Message = ex is DomainException || ex is UserNotFoundException ? ex.Message : "An unexpected error occurred. Please try again later."
             };
 
             return httpContext.Response.WriteAsync(JsonSerializer.Serialize(errorResponse));
