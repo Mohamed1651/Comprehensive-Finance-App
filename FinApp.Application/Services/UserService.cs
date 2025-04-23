@@ -2,6 +2,7 @@
 using FinApp.Domain.Entities;
 using FinApp.Domain.Exceptions;
 using FinApp.Domain.Interfaces;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,19 @@ namespace FinApp.Application.Services
     public class UserService : IUserService
     {
         private readonly IGenericRepository<User> _userRepository;
-        public UserService(IGenericRepository<User> userRepository) 
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public UserService(IGenericRepository<User> userRepository, IHttpContextAccessor httpContextAccessor) 
         { 
             _userRepository = userRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
+        public string? UserId =>
+            _httpContextAccessor.HttpContext?.User?.FindFirst("sub")?.Value;
+
+        public bool IsAuthenticated =>
+            _httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated == true;       
+     
         public Task<IEnumerable<User>> GetUsers()
         {
             return _userRepository.GetAllAsync();
@@ -51,6 +60,11 @@ namespace FinApp.Application.Services
         {
             var user = await _userRepository.GetByIdAsync(id);
             await _userRepository.DeleteAsync(user);
+        }
+
+        public Task<User> GetCurrentUser()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -10,6 +10,7 @@ namespace FinApp.Application.Interfaces
 {
     public interface IUserService
     {
+        public Task<User> GetCurrentUser();
         public Task<IEnumerable<User>> GetUsers();
         public Task<User> GetUser(int id);
         public Task CreateUser(User value);

@@ -1,8 +1,11 @@
 ﻿import { FC } from 'react';
+import Link from './routing/Link';
 
 const Toolbar: FC = () => {
     return (
-        <input className="p-2 rounded" type="text" placeholder="Search..."></input>
+        <nav>
+            <Link to="/">Home</Link>
+        </nav>
     )
 }
 

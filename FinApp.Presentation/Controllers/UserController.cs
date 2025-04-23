@@ -2,7 +2,9 @@
 using FinApp.Application.Interfaces;
 using FinApp.Domain.Entities;
 using FinApp.Presentation.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FinApp.Presentation.Controllers
 {
@@ -19,8 +21,23 @@ namespace FinApp.Presentation.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet("me")]
+        [Authorize(Roles = "User")]
+        public IActionResult GetCurrentUser()
+        {
+            ClaimsPrincipal user = HttpContext.User;
+            return Ok(new
+            {
+                Name = user.FindFirst(ClaimTypes.Name)?.Value,
+                Email = user.FindFirst("preferred_username")?.Value,
+                ObjectId = user.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value,
+                Roles = user.FindAll(ClaimTypes.Role).Select(c => c.Value).ToList()
+            });
+        }
+
         // GET: api/<UserController>
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<UserDto>> Get()
         {
             IEnumerable<User> user = await _userService.GetUsers();
@@ -29,6 +46,7 @@ namespace FinApp.Presentation.Controllers
         }
         // GET api/<UserController>/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<UserDto>> Get(int id)
         {
             User user = await _userService.GetUser(id);
@@ -38,6 +56,7 @@ namespace FinApp.Presentation.Controllers
 
         // POST api/<UserController>
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> Post([FromBody] UserDto dto)
         {
             User user = _mapper.Map<User>(dto);
@@ -47,6 +66,7 @@ namespace FinApp.Presentation.Controllers
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult> Put(int id, [FromBody] UserDto dto)
         {
             User userToUpdate = _mapper.Map<User>(dto);
@@ -59,6 +79,7 @@ namespace FinApp.Presentation.Controllers
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> Delete(int id)
         {
             await _userService.DeleteUser(id);
