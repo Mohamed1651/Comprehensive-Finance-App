@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FinApp.Infrastructure.Repositories
 {
-    public class UserRepository : IGenericRepository<User>
+    public class UserRepository : IRepository<User>
     {
         private readonly ApplicationDbContext _context;
 

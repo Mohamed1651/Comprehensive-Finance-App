@@ -8,7 +8,7 @@ using Microsoft.Data.SqlClient;
 using FinApp.Application.Interfaces;
 using FinApp.Application.Services;
 using FinApp.Infrastructure.Repositories;
-using FinApp.Presentation.Dtos;
+using FinApp.Application.Dtos;
 using FinApp.Presentation.Mappings;
 using FinApp.Presentation.Middleware;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using FinApp.Application.Commands.CreateUser;
 
 namespace FinApp.Presentation;
 public class Program
@@ -42,7 +43,7 @@ public class Program
                 ValidateAudience = true,
                 ValidAudience = oidcSettings.ClientId,
                 ValidateLifetime = true
-            };
+            }; 
 
             options.Events = new JwtBearerEvents
             {
@@ -72,11 +73,15 @@ public class Program
         });
 
         builder.Services.AddControllers();
+        builder.Services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssembly(typeof(CreateUserHandler).Assembly);
+        });
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
         builder.Services.AddScoped<IUserService, UserService>();
-        builder.Services.AddScoped<IGenericRepository<User>, UserRepository>();
+        builder.Services.AddScoped<IRepository<User>, UserRepository>();
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection")));
 

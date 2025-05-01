@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FinApp.Domain.Interfaces
 {
-    public interface IGenericRepository<T> where T : IEntity
+    public interface IRepository<T> where T : IEntity
     {
         Task<IEnumerable<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);
