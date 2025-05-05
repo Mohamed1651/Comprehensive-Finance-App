@@ -102,8 +102,8 @@ public class Program
 
         app.UseRouting();
 
-
         app.UseCors("AllowFrontend");
+
         app.UseAuthentication();
         app.UseAuthorization();
 
