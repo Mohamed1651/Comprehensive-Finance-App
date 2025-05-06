@@ -1,5 +1,5 @@
 ﻿import React, { FC } from 'react';
-import { LinkProps } from '../../interfaces/LinkProps'
+import { LinkProps } from '../../types/LinkProps'
 
 const Link: FC<LinkProps> = ({ to, children }) => {
     const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {

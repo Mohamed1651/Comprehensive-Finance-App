@@ -3,8 +3,9 @@ import Toolbar from "./components/Toolbar";
 import Home from "./pages/Home";
 import Router from "./components/routing/Router";
 import { useMsal } from "@azure/msal-react";
-import FetchData from "./components/FetchData";
-import { loginRequest } from "./authConfig"
+import UserDetails from "./components/UserDetails";
+import { loginRequest } from "./services/auth/AuthConfig"
+import UserList from "./components/UserList";
 const routes = [
     { path: '/', component: Home },
 ];
@@ -41,7 +42,8 @@ const App: React.FC = () => {
                 <LoginButton />
                 <LogoutButton />
                 <h1>Welcome to the App!</h1>
-                <FetchData />
+                <UserDetails />
+                <UserList />
                 <Router routes={routes} />
             </main>
         </div>

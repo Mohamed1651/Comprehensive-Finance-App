@@ -1,4 +1,4 @@
-﻿namespace FinApp.Presentation.Dtos
+﻿namespace FinApp.Application.Dtos
 {
     public class OIDCSettingsDto
     {

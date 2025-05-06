@@ -13,9 +13,9 @@ namespace FinApp.Application.Services
 {
     public class UserService : IUserService
     {
-        private readonly IGenericRepository<User> _userRepository;
+        private readonly IRepository<User> _userRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public UserService(IGenericRepository<User> userRepository, IHttpContextAccessor httpContextAccessor) 
+        public UserService(IRepository<User> userRepository, IHttpContextAccessor httpContextAccessor) 
         { 
             _userRepository = userRepository;
             _httpContextAccessor = httpContextAccessor;
@@ -52,7 +52,6 @@ namespace FinApp.Application.Services
 
             existingUser.Name = user.Name;
             existingUser.Email = user.Email;
-            existingUser.Password = user.Password;
 
             await _userRepository.UpdateAsync(existingUser);
         }

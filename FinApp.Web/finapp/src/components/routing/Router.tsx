@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect, FC } from 'react';
-import { RouterProps } from '../../interfaces/RouterProps';
+import { RouterProps } from '../../types/RouterProps';
 
 const Router: FC<RouterProps> = ({ routes }) => {
     const [currentPath, setCurrentPath] = useState<string>(window.location.pathname);

@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using FinApp.Application.Dtos;
 using FinApp.Application.Interfaces;
+using FinApp.Application.Queries.GetUserById;
+using FinApp.Application.Queries.GetUsers;
 using FinApp.Domain.Entities;
-using FinApp.Presentation.Dtos;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -14,23 +17,32 @@ namespace FinApp.Presentation.Controllers
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public UserController(IUserService userService, IMapper mapper)
+        public UserController(IUserService userService, IMapper mapper, IMediator mediator)
         {
             _userService = userService;
             _mapper = mapper;
+            _mediator = mediator;
+        }
+
+        [HttpGet("claims")]
+        [Authorize]
+        public ActionResult GetClaims()
+        {
+            var claims = HttpContext.User.Claims.Select(c => new { c.Type, c.Value }).ToList();
+            return Ok(claims);
         }
 
         [HttpGet("me")]
         [Authorize(Roles = "User")]
-        public IActionResult GetCurrentUser()
+        public ActionResult GetCurrentUser()
         {
             ClaimsPrincipal user = HttpContext.User;
             return Ok(new
             {
-                Name = user.FindFirst(ClaimTypes.Name)?.Value,
+                Name = user.FindFirst("name")?.Value,
                 Email = user.FindFirst("preferred_username")?.Value,
-                ObjectId = user.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value,
                 Roles = user.FindAll(ClaimTypes.Role).Select(c => c.Value).ToList()
             });
         }
@@ -38,19 +50,20 @@ namespace FinApp.Presentation.Controllers
         // GET: api/<UserController>
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<UserDto>> Get()
+        public async Task<ActionResult<UserDto>> Get(CancellationToken cancellationToken)
         {
-            IEnumerable<User> user = await _userService.GetUsers();
-            var userDtos = _mapper.Map<IEnumerable<UserDto>>(user);
+            var query = new GetUsersQuery();
+            var userDtos = await _mediator.Send(query, cancellationToken);
             return Ok(userDtos);
         }
+
         // GET api/<UserController>/5
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<ActionResult<UserDto>> Get(int id)
+        public async Task<ActionResult<UserDto>> Get(int id, CancellationToken cancellationToken)
         {
-            User user = await _userService.GetUser(id);
-            UserDto userDto = _mapper.Map<UserDto>(user);
+            var query = new GetUserByIdQuery(id);
+            var userDto = await _mediator.Send(query, cancellationToken);
             return Ok(userDto);
         }
 
