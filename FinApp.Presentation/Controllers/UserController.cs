@@ -2,6 +2,7 @@
 using FinApp.Application.Dtos;
 using FinApp.Application.Interfaces;
 using FinApp.Application.Queries.GetUserById;
+using FinApp.Application.Queries.GetUsers;
 using FinApp.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -49,24 +50,21 @@ namespace FinApp.Presentation.Controllers
         // GET: api/<UserController>
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<UserDto>> Get()
+        public async Task<ActionResult<UserDto>> Get(CancellationToken cancellationToken)
         {
-            IEnumerable<User> user = await _userService.GetUsers();
-            var userDtos = _mapper.Map<IEnumerable<UserDto>>(user);
+            var query = new GetUsersQuery();
+            var userDtos = await _mediator.Send(query, cancellationToken);
             return Ok(userDtos);
         }
+
         // GET api/<UserController>/5
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<ActionResult<UserDto>> Get(int id)
+        public async Task<ActionResult<UserDto>> Get(int id, CancellationToken cancellationToken)
         {
             var query = new GetUserByIdQuery(id);
-            var userDto = await _mediator.Send(query);
+            var userDto = await _mediator.Send(query, cancellationToken);
             return Ok(userDto);
-
-            //User user = await _userService.GetUser(id);
-            //UserDto userDto = _mapper.Map<UserDto>(user);
-            //return Ok(userDto);
         }
 
         // POST api/<UserController>

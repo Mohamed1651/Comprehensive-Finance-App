@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace FinApp.Application.Queries.GetUserById
 {
-    public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, UserDto>
+    public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, UserDto>
     {
         private readonly IRepository<User> _userRepository;
 
-        public GetUserByIdQueryHandler(IRepository<User> userRepository)
+        public GetUserByIdHandler(IRepository<User> userRepository)
         {
             _userRepository = userRepository;
         }
