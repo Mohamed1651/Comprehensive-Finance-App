@@ -37,9 +37,10 @@ namespace FinApp.Application.Services
             return await _userRepository.GetByIdAsync(id);
         }
 
-        public async Task CreateUser(User user)
+        public async Task<User> CreateUser(User user)
         {
             await _userRepository.AddAsync(user);
+            return user;
         }
 
         public async Task UpdateUser(User user)

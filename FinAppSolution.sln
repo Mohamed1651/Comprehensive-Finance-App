@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinApp.Infrastructure", "Fi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinApp.Presentation", "FinApp.Presentation\FinApp.Presentation.csproj", "{055E931F-2BA0-4719-BFFC-A158045E5A87}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinApp.Tests", "FinApp.Tests\FinApp.Tests.csproj", "{69389E23-0B30-4621-A386-DF6E4ECFD7A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{055E931F-2BA0-4719-BFFC-A158045E5A87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{055E931F-2BA0-4719-BFFC-A158045E5A87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{055E931F-2BA0-4719-BFFC-A158045E5A87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69389E23-0B30-4621-A386-DF6E4ECFD7A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69389E23-0B30-4621-A386-DF6E4ECFD7A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69389E23-0B30-4621-A386-DF6E4ECFD7A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69389E23-0B30-4621-A386-DF6E4ECFD7A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

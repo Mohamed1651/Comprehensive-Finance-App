@@ -13,7 +13,7 @@ namespace FinApp.Application.Interfaces
         public Task<User> GetCurrentUser();
         public Task<IEnumerable<User>> GetUsers();
         public Task<User> GetUser(int id);
-        public Task CreateUser(User value);
+        public Task<User> CreateUser(User value);
         public Task UpdateUser(User value);
         public Task DeleteUser(int id);
     }
