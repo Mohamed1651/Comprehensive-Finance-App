@@ -1,4 +1,4 @@
-﻿using FinApp.Domain.Exceptions;
+﻿using FinApp.Domain.Common.Exceptions;
 using System.Net;
 using System.Text.Json;
 

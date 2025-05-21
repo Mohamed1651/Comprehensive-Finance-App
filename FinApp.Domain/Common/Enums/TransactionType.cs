@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FinApp.Domain.Interfaces
+namespace FinApp.Domain.Common.Enums
 {
-    public interface IEntity
+    public enum TransactionType
     {
-        int Id { get; set; }
+        Income,
+        Expense
     }
 }

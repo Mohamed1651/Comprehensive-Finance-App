@@ -1,7 +1,7 @@
 ﻿using FinApp.Application.Interfaces;
-using FinApp.Domain.Entities;
-using FinApp.Domain.Exceptions;
-using FinApp.Domain.Interfaces;
+using FinApp.Domain.Common.Exceptions;
+using FinApp.Domain.Common.Interfaces;
+using FinApp.Domain.Users.Entities;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;

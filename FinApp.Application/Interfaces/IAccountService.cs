@@ -1,4 +1,4 @@
-using FinApp.Domain.Entities;
+using FinApp.Domain.Common.Entities;
 using FinApp.Domain.Interfaces;
 using System;
 using System.Collections.Generic;

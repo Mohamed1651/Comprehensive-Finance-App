@@ -1,5 +1,5 @@
-﻿using FinApp.Domain.Entities;
-using FinApp.Domain.Interfaces;
+﻿using FinApp.Domain.Common.Interfaces;
+using FinApp.Domain.Users.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

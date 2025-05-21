@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FinApp.Domain.Exceptions
+namespace FinApp.Domain.Common.Exceptions
 {
     public class DomainException : Exception
     {

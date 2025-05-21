@@ -3,7 +3,7 @@ using FinApp.Application.Dtos;
 using FinApp.Application.Interfaces;
 using FinApp.Application.Queries.GetUserById;
 using FinApp.Application.Queries.GetUsers;
-using FinApp.Domain.Entities;
+using FinApp.Domain.Users.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

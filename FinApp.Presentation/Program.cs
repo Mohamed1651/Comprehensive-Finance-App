@@ -1,6 +1,4 @@
 using FinApp.Presentation;
-using FinApp.Domain.Entities;
-using FinApp.Domain.Interfaces;
 using FinApp.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -17,6 +15,8 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using FinApp.Application.Commands.CreateUser;
+using FinApp.Domain.Common.Interfaces;
+using FinApp.Domain.Users.Entities;
 
 namespace FinApp.Presentation;
 public class Program

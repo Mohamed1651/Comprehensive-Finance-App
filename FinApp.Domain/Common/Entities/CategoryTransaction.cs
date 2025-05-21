@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FinApp.Domain.Entities
+namespace FinApp.Domain.Common.Entities
 {
     public class CategoryTransaction
     {

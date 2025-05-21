@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FinApp.Domain.Interfaces
+namespace FinApp.Domain.Common.Interfaces
 {
     public interface IRepository<T> where T : IEntity
     {
