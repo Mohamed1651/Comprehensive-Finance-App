@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FinApp.Application.Dtos;
-using FinApp.Domain.Users.Entities;
+using FinApp.Domain.Entities;
 
 namespace FinApp.Presentation.Mappings
 {

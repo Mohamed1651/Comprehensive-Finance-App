@@ -15,8 +15,8 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using FinApp.Application.Commands.CreateUser;
-using FinApp.Domain.Common.Interfaces;
-using FinApp.Domain.Users.Entities;
+using FinApp.Domain.Interfaces;
+using FinApp.Domain.Entities;
 
 namespace FinApp.Presentation;
 public class Program

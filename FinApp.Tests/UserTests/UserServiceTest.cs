@@ -5,8 +5,8 @@ using Moq;
 using System.Security.Claims;
 using Xunit;
 using System.Threading.Tasks;
-using FinApp.Domain.Common.Interfaces;
-using FinApp.Domain.Users.Entities;
+using FinApp.Domain.Interfaces;
+using FinApp.Domain.Entities;
 
 namespace FinApp.Tests.UserTests
 {

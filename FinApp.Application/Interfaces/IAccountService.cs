@@ -1,5 +1,4 @@
-using FinApp.Domain.Common.Entities;
-using FinApp.Domain.Interfaces;
+using FinApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,6 +1,6 @@
 ﻿using FinApp.Application.Dtos;
-using FinApp.Domain.Common.Interfaces;
-using FinApp.Domain.Users.Entities;
+using FinApp.Domain.Entities;
+using FinApp.Domain.Interfaces;
 using MediatR;
 using System;
 using System.Collections.Generic;

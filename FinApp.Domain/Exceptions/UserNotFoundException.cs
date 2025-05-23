@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FinApp.Domain.Common.Exceptions
+namespace FinApp.Domain.Exceptions
 {
     public class UserNotFoundException : Exception
     {
