@@ -45,39 +45,45 @@ namespace FinApp.Domain.Aggregates
             _transactions.Add(transaction);
         }
 
-        public void Withdrawal(double value, string title, string description, int categoryId, List<CategoryTransaction> categoryTransaction)
+        public void Withdrawal(double value, string title, string description, int accountId, List<int> categoryIds)
         {
             if (value <= 0)
                 throw new DomainException("Withdrawal amount must be positive.");
 
             Balance = Balance.Subtract(value);
-
+            var categoryTransactions = categoryIds
+                .Select(id => new CategoryTransaction(id))
+                .ToList();
             var transaction = new Transaction(
                 title,
                 description,
                 value,
-                TransactionType.Withdrawal,
-                categoryId,
-                categoryTransaction
+                TransactionType.Deposit,
+                accountId,
+                categoryTransactions
             );
 
             AddTransaction(transaction);
         }
 
-        public void Deposit(double value, string title, string description, int categoryId, List<CategoryTransaction> categoryTransaction)
+        public void Deposit(double value, string title, string description, int accountId, List<int> categoryIds)
         {
             if (value <= 0)
                 throw new DomainException("Deposit amount must be positive.");
 
             Balance = Balance.Add(value);
 
+            var categoryTransactions = categoryIds
+            .Select(id => new CategoryTransaction(id))
+            .ToList();
+
             var transaction = new Transaction(
                 title,
                 description,
                 value,
                 TransactionType.Deposit,
-                categoryId,
-                categoryTransaction
+                accountId,
+                categoryTransactions
             );
 
             AddTransaction(transaction);
