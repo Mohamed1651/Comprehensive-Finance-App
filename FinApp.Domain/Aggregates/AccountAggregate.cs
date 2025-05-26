@@ -51,9 +51,11 @@ namespace FinApp.Domain.Aggregates
                 throw new DomainException("Withdrawal amount must be positive.");
 
             Balance = Balance.Subtract(value);
+
             var categoryTransactions = categoryIds
                 .Select(id => new CategoryTransaction(id))
                 .ToList();
+
             var transaction = new Transaction(
                 title,
                 description,
