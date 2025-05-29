@@ -60,7 +60,7 @@ namespace FinApp.Domain.Aggregates
                 title,
                 description,
                 value,
-                TransactionType.Deposit,
+                TransactionType.Withdrawal,
                 accountId,
                 categoryTransactions
             );

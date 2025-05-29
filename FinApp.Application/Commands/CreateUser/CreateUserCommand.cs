@@ -1,4 +1,6 @@
-﻿using FinApp.Application.Interfaces;
+﻿using FinApp.Application.Dtos;
+using FinApp.Application.Interfaces;
+using FinApp.Domain.Aggregates;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,15 +10,9 @@ using System.Threading.Tasks;
 
 namespace FinApp.Application.Commands.CreateUser
 {
-    public class CreateUserCommand : IRequest<int>
+    public class CreateUserCommand : IRequest<UserDto>
     {
-        public string Name { get; set; }
-        public string Email { get; set; }
-
-        public CreateUserCommand(string name, string email)
-        {
-            Name = name;
-            Email = email;
-        }
+        public CreateUserCommand()
+        {}
     }
 }

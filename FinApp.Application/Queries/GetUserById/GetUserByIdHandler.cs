@@ -1,28 +1,26 @@
-﻿using FinApp.Application.Dtos;
-using FinApp.Domain.Entities;
-using FinApp.Domain.Interfaces;
+﻿using AutoMapper;
+using FinApp.Application.Dtos;
+using FinApp.Application.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FinApp.Application.Queries.GetUserById
 {
     public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, UserDto>
     {
-        private readonly IRepository<User> _userRepository;
+        private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public GetUserByIdHandler(IRepository<User> userRepository)
+        public GetUserByIdHandler(IUserService userService, IMapper mapper)
         {
-            _userRepository = userRepository;
+            _userService = userService;
+            _mapper = mapper;
         }
 
         public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByIdAsync(request.Id);
-            return new UserDto(user.Id, user.Name, user.Email);
+            var user = await _userService.GetUser(request.Id);
+            var dto = _mapper.Map<UserDto>(user);
+            return dto;
         }
     }
 

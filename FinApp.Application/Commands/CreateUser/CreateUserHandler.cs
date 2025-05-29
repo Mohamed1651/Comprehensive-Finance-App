@@ -1,27 +1,25 @@
-﻿using FinApp.Domain.Entities;
-using FinApp.Domain.Interfaces;
+﻿using AutoMapper;
+using FinApp.Application.Dtos;
+using FinApp.Application.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FinApp.Application.Commands.CreateUser
 {
-    public class CreateUserHandler : IRequestHandler<CreateUserCommand, int>
+    public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserDto>
     {
-        private IRepository<User> _userRepository;
+        private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public CreateUserHandler(IRepository<User> userRepository)
+        public CreateUserHandler(IUserService userService, IMapper mapper)
         {
-            _userRepository = userRepository;
+            _userService = userService;
+            _mapper = mapper;
         }
-        public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<UserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = new User(request.Name, request.Email);
-            await _userRepository.AddAsync(user);
-            return user.Id;
+            var user = await _userService.GetCurrentUser();
+            var dto = _mapper.Map<UserDto>(user);
+            return dto;
         }
     }
 }

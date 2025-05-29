@@ -1,3 +1,4 @@
+using FinApp.Domain.Aggregates;
 using FinApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,11 @@ namespace FinApp.Application.Interfaces
 {
     public interface IAccountService
     {
-        IEnumerable<Account> GetAccounts();
-        IEnumerable<Account> GetAccountsByUser(int userId);
-        Account GetAccount(int id);
-        void CreateAccount(Account account);
-        void UpdateAccount(Account account);
+        IEnumerable<AccountAggregate> GetAccounts();
+        IEnumerable<AccountAggregate> GetAccountsByUser(int userId);
+        AccountAggregate GetAccount(int id);
+        void CreateAccount(AccountAggregate account);
+        void UpdateAccount(AccountAggregate account);
         void DeleteAccount(int id);
     }
 }

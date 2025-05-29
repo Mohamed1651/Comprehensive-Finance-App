@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using System.Threading;
+using AutoMapper;
+using FinApp.Application.Commands.CreateUser;
 using FinApp.Application.Dtos;
 using FinApp.Application.Interfaces;
 using FinApp.Application.Queries.GetUserById;
@@ -7,7 +10,6 @@ using FinApp.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace FinApp.Presentation.Controllers
 {
@@ -36,15 +38,13 @@ namespace FinApp.Presentation.Controllers
 
         [HttpGet("me")]
         [Authorize(Roles = "User")]
-        public ActionResult GetCurrentUser()
+        public async Task<ActionResult<UserDto>> GetCurrentUser(CancellationToken cancellationToken)
         {
-            ClaimsPrincipal user = HttpContext.User;
-            return Ok(new
-            {
-                Name = user.FindFirst("name")?.Value,
-                Email = user.FindFirst("preferred_username")?.Value,
-                Roles = user.FindAll(ClaimTypes.Role).Select(c => c.Value).ToList()
-            });
+
+            var command = new CreateUserCommand();
+            var loggedInUser = await _mediator.Send(command, cancellationToken);
+
+            return Ok(loggedInUser);
         }
 
         // GET: api/<UserController>
@@ -67,26 +67,12 @@ namespace FinApp.Presentation.Controllers
             return Ok(userDto);
         }
 
-        // POST api/<UserController>
-        [HttpPost]
-        [Authorize]
-        public async Task<ActionResult> Post([FromBody] UserDto dto)
-        {
-            User user = _mapper.Map<User>(dto);
-            await _userService.CreateUser(user);
-            return Created();
-        }
-
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<ActionResult> Put(int id, [FromBody] UserDto dto)
+        public async Task<ActionResult> Put([FromBody] UserDto dto)
         {
-            User userToUpdate = _mapper.Map<User>(dto);
-            userToUpdate.Id = id;
-
-            await _userService.UpdateUser(userToUpdate);
-
+            await _userService.UpdateUser(dto);
             return NoContent();
         }
 

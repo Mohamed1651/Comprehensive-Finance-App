@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using FinApp.Application.Commands.CreateUser;
 using FinApp.Domain.Interfaces;
 using FinApp.Domain.Entities;
+using FinApp.Domain.Aggregates;
 
 namespace FinApp.Presentation;
 public class Program
@@ -25,7 +26,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         var configuration = builder.Configuration;
-        var oidcSettings = builder.Configuration.GetSection("OIDC").Get<OIDCSettingsDto>();
+        var oidcSettings = builder.Configuration.GetSection("OIDC").Get<OIDCSettingsDto>() ?? new OIDCSettingsDto();
         // Add services to the container.
         builder.Services.Configure<OIDCSettingsDto>(builder.Configuration.GetSection("OIDC"));
         builder.Services.AddHttpContextAccessor();
@@ -81,7 +82,7 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
         builder.Services.AddScoped<IUserService, UserService>();
-        builder.Services.AddScoped<IRepository<User>, UserRepository>();
+        builder.Services.AddScoped<IRepository<UserAggregate>, UserRepository>();
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection")));
 

@@ -1,20 +1,16 @@
-﻿using FinApp.Domain.Entities;
-using FinApp.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FinApp.Application.Dtos;
+using FinApp.Domain.Aggregates;
+
 
 namespace FinApp.Application.Interfaces
 {
     public interface IUserService
     {
-        public Task<User> GetCurrentUser();
-        public Task<IEnumerable<User>> GetUsers();
-        public Task<User> GetUser(int id);
-        public Task<User> CreateUser(User value);
-        public Task UpdateUser(User value);
+        public Task<UserAggregate> GetCurrentUser();
+        public Task<IEnumerable<UserAggregate>> GetUsers();
+        public Task<UserAggregate> GetUser(int id);
+        public Task<UserAggregate> CreateUser(UserDto value);
+        public Task UpdateUser(UserDto value);
         public Task DeleteUser(int id);
     }
 }
