@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace FinApp.Domain.Interfaces
 {
-    public interface IAggregateRoot
+    public interface IDomainEventHandler<T> where T : IDomainEvent
     {
-        IReadOnlyCollection<IDomainEvent> DomainEvents { get; }
-        void ClearDomainEvents();
+        Task Handle(T domainEvent);
     }
 }

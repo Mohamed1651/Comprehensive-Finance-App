@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using FinApp.Application.Dtos;
-using FinApp.Application.Interfaces;
 using FinApp.Domain.Aggregates;
 using FinApp.Domain.Entities;
 using FinApp.Domain.Interfaces;
@@ -15,18 +14,18 @@ namespace FinApp.Application.Queries.GetUsers
 {
     public class GetUsersHandler : IRequestHandler<GetUsersQuery, List<UserDto>>
     {
-        private readonly IUserService _userService;
         private readonly IMapper _mapper;
+        private readonly IRepository<UserAggregate> _userRepository;
 
-        public GetUsersHandler(IUserService userService, IMapper mapper)
+        public GetUsersHandler(IMapper mapper, IRepository<UserAggregate> userRepository)
         {
-            _userService = userService;
             _mapper = mapper;
+            _userRepository = userRepository;
         }
 
         public async Task<List<UserDto>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {
-            var users = await _userService.GetUsers();
+            var users = await _userRepository.GetAllAsync();
             var dtos = _mapper.Map<List<UserDto>>(users);
             return dtos;
         }

@@ -1,5 +1,6 @@
 ﻿using FinApp.Domain.Entities;
 using FinApp.Domain.Enums;
+using FinApp.Domain.Events;
 using FinApp.Domain.Exceptions;
 using FinApp.Domain.Interfaces;
 using FinApp.Domain.ValueObjects;
@@ -11,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace FinApp.Domain.Aggregates
 {
-    public class AccountAggregate : IAggregateRoot
+    public class AccountAggregate : AggregateRoot
     {
-        public int Id { get; private set; }
+        public int Id { get; private set; } = 0;
         public string Name { get; private set; }
         public AccountType AccountType { get; private set; }
         public Balance Balance { get; private set; }
@@ -24,7 +25,7 @@ namespace FinApp.Domain.Aggregates
         {
             get { return _transactionsReadOnly; }
         }
-
+        public AccountAggregate(){ }
         public AccountAggregate(string name, AccountType accountType, double balance, int userId, List<Transaction> transactions)
         {
             Name = name;
@@ -33,6 +34,8 @@ namespace FinApp.Domain.Aggregates
             UserId = userId;
             _transactions = transactions != null ? new List<Transaction>(transactions) : new List<Transaction>();
             _transactionsReadOnly = _transactions.AsReadOnly();
+
+            AddDomainEvent(new AccountCreatedEvent(Id, UserId));
         }
 
         public void AddTransaction(Transaction transaction)

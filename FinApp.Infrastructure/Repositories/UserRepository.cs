@@ -1,14 +1,15 @@
 ﻿using FinApp.Domain.Aggregates;
 using FinApp.Domain.Interfaces;
+using FinApp.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinApp.Infrastructure.Repositories
 {
     public class UserRepository : IRepository<UserAggregate>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly UserDbContext _context;
 
-        public UserRepository(ApplicationDbContext context)
+        public UserRepository(UserDbContext context)
         {
             _context = context;
         }

@@ -7,6 +7,8 @@ namespace FinApp.Domain.Aggregates
     {
         public string Value { get; }
 
+
+        private ColorHex() { }
         private ColorHex(string value)
         {
             Value = value;

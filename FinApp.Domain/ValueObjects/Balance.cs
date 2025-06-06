@@ -9,6 +9,7 @@ namespace FinApp.Domain.ValueObjects
 {
     public record Balance
     {
+        private Balance() { }
         public double Value { get; }
 
         public Balance(double value)

@@ -5,7 +5,7 @@ namespace FinApp.Domain.ValueObjects
     public record Amount
     {
         public double Value { get; }
-
+        private Amount() { }
         private Amount(double value) 
         {
             Value = value;

@@ -6,21 +6,19 @@ using System.Xml.Linq;
 
 namespace FinApp.Domain.Aggregates
 {
-    public class UserAggregate : IAggregateRoot
+    public class UserAggregate : AggregateRoot
     {
-        public int Id { get; private set; }
+        public int Id { get; private set; } = 0;
         public string Uid { get; private set; }
         public string Name { get; private set; }
         public Email Email { get; private set; }
         public Settings Settings { get; private set; }
-        public IReadOnlyCollection<AccountAggregate> Accounts => _accounts.AsReadOnly();
-        private readonly List<AccountAggregate> _accounts = new List<AccountAggregate>();
+        private UserAggregate() { }
 
         public UserAggregate(string uid, string name, string email, Settings settings)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new DomainException("Name cannot be empty.");
-
             Uid = uid;
             Name = name;
             Email = Email.Create(email);
@@ -45,13 +43,5 @@ namespace FinApp.Domain.Aggregates
         {
             Settings = newSettings ?? throw new DomainException(nameof(newSettings));
         }
-
-        public void AddAccount(AccountAggregate account)
-        {
-            if (account == null) throw new DomainException("Account cannot be null.");
-            if (_accounts.Any(a => a.Id == account.Id)) throw new DomainException("Account already exists.");
-            _accounts.Add(account);
-        }
-
     }
 }

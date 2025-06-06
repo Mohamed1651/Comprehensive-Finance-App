@@ -1,10 +1,7 @@
 using FinApp.Presentation;
-using FinApp.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.Data.SqlClient;
-using FinApp.Application.Interfaces;
-using FinApp.Application.Services;
 using FinApp.Infrastructure.Repositories;
 using FinApp.Application.Dtos;
 using FinApp.Presentation.Mappings;
@@ -18,6 +15,7 @@ using FinApp.Application.Commands.CreateUser;
 using FinApp.Domain.Interfaces;
 using FinApp.Domain.Entities;
 using FinApp.Domain.Aggregates;
+using FinApp.Infrastructure.Contexts;
 
 namespace FinApp.Presentation;
 public class Program
@@ -81,19 +79,24 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
-        builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IRepository<AccountAggregate>, AccountRepository>();
         builder.Services.AddScoped<IRepository<UserAggregate>, UserRepository>();
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        builder.Services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
+        builder.Services.AddDbContext<UserDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection")));
-
+        builder.Services.AddDbContext<FinanceDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection")));
         var app = builder.Build();
 
         app.UseCustomExceptionHandler();
 
         using (var scope = app.Services.CreateScope())
         {
-            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            dbContext.Database.Migrate();
+            var userdbContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
+            userdbContext.Database.Migrate();
+
+            var financedbContext = scope.ServiceProvider.GetRequiredService<FinanceDbContext>();
+            financedbContext.Database.Migrate();
         }
 
         app.UseSwagger();

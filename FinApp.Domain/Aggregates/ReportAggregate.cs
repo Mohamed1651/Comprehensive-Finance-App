@@ -16,10 +16,17 @@ namespace FinApp.Domain.Aggregates
         public int? UserId { get; set; }
         public Advice Advice { get; set; }
 
+        public IReadOnlyCollection<IDomainEvent> DomainEvents => throw new NotImplementedException();
+
         public ReportAggregate(string name, string description)
         {
             Name = name;
             Description = description;
+        }
+
+        public void ClearDomainEvents()
+        {
+            throw new NotImplementedException();
         }
     }
 }

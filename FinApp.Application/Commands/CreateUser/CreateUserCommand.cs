@@ -1,5 +1,4 @@
 ﻿using FinApp.Application.Dtos;
-using FinApp.Application.Interfaces;
 using FinApp.Domain.Aggregates;
 using MediatR;
 using System;
@@ -12,7 +11,10 @@ namespace FinApp.Application.Commands.CreateUser
 {
     public class CreateUserCommand : IRequest<UserDto>
     {
-        public CreateUserCommand()
-        {}
+        public UserDto UserDto { get; }
+        public CreateUserCommand(UserDto userDto)
+        {
+            UserDto = userDto;
+        }
     }
 }

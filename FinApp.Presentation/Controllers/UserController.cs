@@ -1,15 +1,15 @@
-﻿using System.Security.Claims;
-using System.Threading;
-using AutoMapper;
+﻿using AutoMapper;
 using FinApp.Application.Commands.CreateUser;
 using FinApp.Application.Dtos;
-using FinApp.Application.Interfaces;
 using FinApp.Application.Queries.GetUserById;
 using FinApp.Application.Queries.GetUsers;
 using FinApp.Domain.Entities;
+using FinApp.Domain.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.Threading;
 
 namespace FinApp.Presentation.Controllers
 {
@@ -17,13 +17,11 @@ namespace FinApp.Presentation.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public UserController(IUserService userService, IMapper mapper, IMediator mediator)
+        public UserController(IMapper mapper, IMediator mediator)
         {
-            _userService = userService;
             _mapper = mapper;
             _mediator = mediator;
         }
@@ -40,8 +38,12 @@ namespace FinApp.Presentation.Controllers
         [Authorize(Roles = "User")]
         public async Task<ActionResult<UserDto>> GetCurrentUser(CancellationToken cancellationToken)
         {
-
-            var command = new CreateUserCommand();
+            //_httpContextAccessor.HttpContext?.User?.FindFirst("name")?.Value
+            var Uid = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var Name = User.FindFirst("name")?.Value;
+            var Email = User.FindFirst("email")?.Value ?? "error@error.nl";
+            var dto = new UserDto(0, Uid, Name, Email);
+            var command = new CreateUserCommand(dto);
             var loggedInUser = await _mediator.Send(command, cancellationToken);
 
             return Ok(loggedInUser);
@@ -65,24 +67,6 @@ namespace FinApp.Presentation.Controllers
             var query = new GetUserByIdQuery(id);
             var userDto = await _mediator.Send(query, cancellationToken);
             return Ok(userDto);
-        }
-
-        // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        [Authorize]
-        public async Task<ActionResult> Put([FromBody] UserDto dto)
-        {
-            await _userService.UpdateUser(dto);
-            return NoContent();
-        }
-
-        // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
-        [Authorize]
-        public async Task<ActionResult> Delete(int id)
-        {
-            await _userService.DeleteUser(id);
-            return NoContent();
         }
     }
 }

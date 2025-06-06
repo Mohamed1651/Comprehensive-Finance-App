@@ -19,6 +19,7 @@ namespace FinApp.Domain.Entities
         public int AccountId { get; set; }
         public ICollection<CategoryTransaction> CategoryTransaction { get; set; } = new List<CategoryTransaction>();
 
+        private Transaction() { }
         public Transaction(string title, string description, double amount, TransactionType type, int accountId, ICollection<CategoryTransaction> categoryTransaction)
         {
             Title = title;

@@ -7,23 +7,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FinApp.Infrastructure
+namespace FinApp.Infrastructure.Contexts
 {
-    public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+    public class FinanceDbContextFactory : IDesignTimeDbContextFactory<FinanceDbContext>
     {
-        public ApplicationDbContext CreateDbContext(string[] args)
+        public FinanceDbContext CreateDbContext(string[] args)
         {
             var configuration = new ConfigurationBuilder()
                             .SetBasePath(Directory.GetCurrentDirectory())
                             .AddJsonFile("appsettings.json")
                             .Build();
 
-            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<FinanceDbContext>();
             var connectionString = configuration.GetConnectionString("SqlServerConnection");
 
             optionsBuilder.UseSqlServer(connectionString);
 
-            return new ApplicationDbContext(optionsBuilder.Options);
+            return new FinanceDbContext(optionsBuilder.Options);
         }
     }
 }

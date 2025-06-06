@@ -17,6 +17,8 @@ namespace FinApp.Domain.Entities
         public Category? Category { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+
+        private Budget() { }
         public Budget(double amount, int categoryId, int userId) 
         {
             Amount = Amount.Create(amount);

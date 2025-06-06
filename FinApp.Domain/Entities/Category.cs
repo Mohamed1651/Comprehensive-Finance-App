@@ -16,6 +16,7 @@ namespace FinApp.Domain.Entities
         public ICollection<CategoryTransaction> CategoryTransactions { get; set; } = new List<CategoryTransaction>();
         public Budget Budget { get; set; }
 
+        private Category() { }
         public Category(string name, string colorhex)
         {
             Name = name;

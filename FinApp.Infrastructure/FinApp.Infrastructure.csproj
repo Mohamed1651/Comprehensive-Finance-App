@@ -22,4 +22,8 @@
     <ProjectReference Include="..\FinApp.Application\FinApp.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\FinanceDb\" />
+  </ItemGroup>
+
 </Project>
