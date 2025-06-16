@@ -9,9 +9,9 @@ namespace FinApp.Application.Queries.GetUserById
     public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, UserDto>
     {
         private readonly IMapper _mapper;
-        private readonly IRepository<UserAggregate> _userRepository;
+        private readonly IUserRepository _userRepository;
 
-        public GetUserByIdHandler(IMapper mapper, IRepository<UserAggregate> userRepository)
+        public GetUserByIdHandler(IMapper mapper, IUserRepository userRepository)
         {
             _mapper = mapper;
             _userRepository = userRepository;

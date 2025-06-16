@@ -9,6 +9,7 @@ const UserDetails: React.FC = () => {
     const [data, setData] = useState<any>(null);
     const [error, setError] = useState<string | null>(null);
 
+
     useEffect(() => {
         const fetchData = async () => {
                 if (!accessToken) {
@@ -16,7 +17,7 @@ const UserDetails: React.FC = () => {
                     return;
                 }
                 try {
-                    const result = await fetchUser(accessToken); 
+                    const result = await fetchUser(); 
                     setData(result);
                 } catch (err: any){
                     setError(err.message);

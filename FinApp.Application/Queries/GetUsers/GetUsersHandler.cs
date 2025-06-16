@@ -15,9 +15,9 @@ namespace FinApp.Application.Queries.GetUsers
     public class GetUsersHandler : IRequestHandler<GetUsersQuery, List<UserDto>>
     {
         private readonly IMapper _mapper;
-        private readonly IRepository<UserAggregate> _userRepository;
+        private readonly IUserRepository _userRepository;
 
-        public GetUsersHandler(IMapper mapper, IRepository<UserAggregate> userRepository)
+        public GetUsersHandler(IMapper mapper, IUserRepository userRepository)
         {
             _mapper = mapper;
             _userRepository = userRepository;

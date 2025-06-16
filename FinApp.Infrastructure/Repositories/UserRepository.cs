@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinApp.Infrastructure.Repositories
 {
-    public class UserRepository : IRepository<UserAggregate>
+    public class UserRepository : IUserRepository
     {
         private readonly UserDbContext _context;
 
@@ -34,6 +34,11 @@ namespace FinApp.Infrastructure.Repositories
         public async Task<UserAggregate> GetByIdAsync(int id)
         {
             return await _context.Users.FindAsync(id);
+        }
+
+        public Task<UserAggregate?> GetByUidAsync(string uid)
+        {
+            return _context.Users.FirstOrDefaultAsync(u => u.Uid == uid);
         }
 
         public async Task UpdateAsync(UserAggregate entity)

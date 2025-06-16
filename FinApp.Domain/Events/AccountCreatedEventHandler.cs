@@ -10,9 +10,9 @@ namespace FinApp.Domain.Events
 {
     public class AccountCreatedEventHandler : IDomainEventHandler<AccountCreatedEvent>
     {
-        private readonly IRepository<UserAggregate> _userRepository;
+        private readonly IUserRepository _userRepository;
 
-        public AccountCreatedEventHandler(IRepository<UserAggregate> userRepository)
+        public AccountCreatedEventHandler(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }

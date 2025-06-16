@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="finapp\src\components\FormButton.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="finapp\src\pages\Contact.tsx">
       <SubType>Code</SubType>
     </None>

@@ -38,10 +38,9 @@ namespace FinApp.Presentation.Controllers
         [Authorize(Roles = "User")]
         public async Task<ActionResult<UserDto>> GetCurrentUser(CancellationToken cancellationToken)
         {
-            //_httpContextAccessor.HttpContext?.User?.FindFirst("name")?.Value
             var Uid = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var Name = User.FindFirst("name")?.Value;
-            var Email = User.FindFirst("email")?.Value ?? "error@error.nl";
+            var Email = User.FindFirst("preferred_username")?.Value;
             var dto = new UserDto(0, Uid, Name, Email);
             var command = new CreateUserCommand(dto);
             var loggedInUser = await _mediator.Send(command, cancellationToken);

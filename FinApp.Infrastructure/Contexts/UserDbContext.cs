@@ -30,11 +30,14 @@ namespace FinApp.Infrastructure.Contexts
 
                 builder.HasKey(u => u.Id);
 
-                builder.Property(u => u.Id).ValueGeneratedNever();
+                builder.Property(u => u.Id).ValueGeneratedOnAdd();
 
                 builder.Property(u => u.Uid)
                        .IsRequired()
                        .HasMaxLength(100);
+
+                builder.HasIndex(u => u.Uid)
+                       .IsUnique();
 
                 builder.Property(u => u.Name)
                        .IsRequired()
@@ -61,7 +64,7 @@ namespace FinApp.Infrastructure.Contexts
 
                 builder.HasKey(s => s.Id);
 
-                builder.Property(s => s.Id).ValueGeneratedNever();
+                builder.Property(s => s.Id).ValueGeneratedOnAdd();
 
                 builder.Property(s => s.UserId)
                        .IsRequired();
