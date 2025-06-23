@@ -29,7 +29,7 @@ const UserDetails: React.FC = () => {
     if (error) return <div>Error: {error}</div>;
     if (!data) return <div>Loading...</div>;
 
-    return <div>API Response: {data.name}</div>;
+    return <div></div>;
 };
 
 export default UserDetails;

@@ -41,13 +41,13 @@ const App: React.FC = () => {
         <div>
             <Toolbar />
             <main>
+                <Router routes={routes} />
                 <LoginButton />
                 <LogoutButton />
                 <h1>Welcome to the App!</h1>
                 <UserDetails />
                 <UserList />
                 {isLoggedIn && <Form />}
-                <Router routes={routes} />
             </main>
         </div>
     );

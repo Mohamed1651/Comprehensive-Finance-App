@@ -1,7 +1,7 @@
 ﻿import { useState, useEffect, FC } from 'react';
 import { RouterProps } from '../../types/RouterProps';
 
-const Router: FC<RouterProps> = ({ routes }) => {
+const Router: FC<RouterProps> = (prop) => {
     const [currentPath, setCurrentPath] = useState<string>(window.location.pathname);
 
     useEffect(() => {
@@ -15,8 +15,8 @@ const Router: FC<RouterProps> = ({ routes }) => {
             window.removeEventListener('popstate', onLocationChange);
         };
     }, []);
-
-    const RouteComponent = routes.find(route => route.path === currentPath)?.component || null;
+    
+    const RouteComponent = prop.routes.find(route => route.path === currentPath)?.component || null;
     return RouteComponent ? <RouteComponent /> : <div>404 Not Found</div>;
 }
 

@@ -1,5 +1,6 @@
 ﻿using FinApp.Domain.Aggregates;
 using FinApp.Domain.Entities;
+using FinApp.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,12 @@ namespace FinApp.Infrastructure.Contexts
 {
     public class FinanceDbContext : DbContext
     {
+        private readonly IDomainEventDispatcher _domainEventDispatcher;
+        public FinanceDbContext(DbContextOptions<FinanceDbContext> options, IDomainEventDispatcher domainEventDispatcher) : base(options)
+        {
+            _domainEventDispatcher = domainEventDispatcher;
+        }
+
         public FinanceDbContext(DbContextOptions<FinanceDbContext> options) : base(options) { }
         public DbSet<AccountAggregate> Accounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
@@ -160,6 +167,32 @@ namespace FinApp.Infrastructure.Contexts
                        .HasForeignKey<Budget>(b => b.CategoryId)
                        .OnDelete(DeleteBehavior.Cascade);
             });
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var result = await base.SaveChangesAsync(cancellationToken);
+
+            var domainEntities = ChangeTracker.Entries<IAggregateRoot>()
+                .Where(e => e.Entity.DomainEvents != null && e.Entity.DomainEvents.Any())
+                .Select(e => e.Entity)
+                .ToList();
+
+            var domainEvents = domainEntities
+                .SelectMany(e => e.DomainEvents)
+                .ToList();
+
+            foreach (var entity in domainEntities)
+            {
+                entity.ClearDomainEvents();
+            }
+
+            if (_domainEventDispatcher != null)
+            {
+                await _domainEventDispatcher.DispatchAsync(domainEvents);
+            }
+
+            return result;
         }
     }
 }

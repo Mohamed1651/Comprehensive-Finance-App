@@ -19,9 +19,10 @@ namespace FinApp.Infrastructure.Repositories
             _context = context;
         }
 
-        public Task AddAsync(AccountAggregate entity)
+        public async Task AddAsync(AccountAggregate entity)
         {
-            throw new NotImplementedException();
+            await _context.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
         public Task DeleteAsync(AccountAggregate entity)

@@ -16,6 +16,7 @@ using FinApp.Domain.Interfaces;
 using FinApp.Domain.Entities;
 using FinApp.Domain.Aggregates;
 using FinApp.Infrastructure.Contexts;
+using FinApp.Domain.Events;
 
 namespace FinApp.Presentation;
 public class Program
@@ -74,7 +75,7 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddMediatR(cfg =>
         {
-            cfg.RegisterServicesFromAssembly(typeof(CreateUserHandler).Assembly);
+            cfg.RegisterServicesFromAssemblies(typeof(CreateUserHandler).Assembly, typeof(AccountCreatedEventHandler).Assembly);
         });
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();

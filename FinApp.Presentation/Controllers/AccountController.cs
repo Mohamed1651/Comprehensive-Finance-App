@@ -1,6 +1,7 @@
 ﻿using FinApp.Application.Commands.CreateAccount;
 using FinApp.Application.Dtos;
 using FinApp.Application.Queries.GetUserById;
+using FinApp.Application.Queries.GetUserByUid;
 using FinApp.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -37,8 +38,11 @@ namespace FinApp.Presentation.Controllers
                 return Unauthorized("User ID claim not found.");
             }
 
-            if (!int.TryParse(userIdClaim.Value, out int userId))
-                return Unauthorized("Invalid user ID.");
+            var uid = userIdClaim.Value;
+
+            var getUserByUidCommand = new GetUserByUidQuery(uid);
+            var userId = await _mediator.Send(getUserByUidCommand, cancellationToken);
+
             accountDto.UserId = userId;
 
 
