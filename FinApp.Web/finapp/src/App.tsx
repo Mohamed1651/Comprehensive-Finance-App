@@ -6,6 +6,7 @@ import { useMsal } from "@azure/msal-react";
 import UserDetails from "./components/UserDetails";
 import { loginRequest } from "./services/auth/AuthConfig"
 import UserList from "./components/UserList";
+import Form from "./components/Form";
 const routes = [
     { path: '/', component: Home },
 ];
@@ -24,10 +25,9 @@ export const LogoutButton: React.FC = () => {
     const { instance, accounts } = useMsal();
 
     const handleLogout = () => {
-        // Choose redirect or popup. Redirect is simplest:
         instance.logoutRedirect({
-            account: accounts[0],           // specify which account to sign out
-            postLogoutRedirectUri: "/",     // where to go after logout
+            account: accounts[0],           
+            postLogoutRedirectUri: "/",     
         });
     };
 
@@ -35,16 +35,19 @@ export const LogoutButton: React.FC = () => {
 };
 
 const App: React.FC = () => {
+    const { accounts } = useMsal();
+    const isLoggedIn = accounts && accounts.length > 0;
     return (
         <div>
             <Toolbar />
             <main>
+                <Router routes={routes} />
                 <LoginButton />
                 <LogoutButton />
                 <h1>Welcome to the App!</h1>
                 <UserDetails />
                 <UserList />
-                <Router routes={routes} />
+                {isLoggedIn && <Form />}
             </main>
         </div>
     );

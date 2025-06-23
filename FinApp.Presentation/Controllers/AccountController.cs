@@ -1,7 +1,14 @@
-﻿using FinApp.Application.Interfaces;
+﻿using FinApp.Application.Commands.CreateAccount;
+using FinApp.Application.Dtos;
+using FinApp.Application.Queries.GetUserById;
+using FinApp.Application.Queries.GetUserByUid;
 using FinApp.Domain.Entities;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.Threading;
 
 namespace FinApp.Presentation.Controllers
 {
@@ -9,21 +16,39 @@ namespace FinApp.Presentation.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly IAccountService _accountService;
-        private readonly IUserService _userService;
+        private readonly IMediator _mediator;
 
-        public AccountController(IAccountService accountService, IUserService userService)
+        public AccountController(IMediator mediator)
         {
-            _accountService = accountService;
-            _userService = userService;
+            _mediator = mediator;
         }
 
-        //[HttpGet]
-        //public ActionResult<IEnumerable<Account>> Get()
-        //{
-        //    //var userId = _userService.GetCurrentUser(HttpContext);
-        //    //var accounts = _accountService.GetAccountsByUser(userId);
-        //    //return Ok(accounts);
-        //}
+        [HttpPost("create-account")]
+        [Authorize]
+        public async Task<ActionResult> Post([FromBody] AccountDto accountDto, CancellationToken cancellationToken)
+        {
+            if (accountDto == null)
+            {
+                return BadRequest("Account cannot be null.");
+            }
+
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier) ?? User.FindFirst("sub");
+            if(userIdClaim == null)
+            {
+                return Unauthorized("User ID claim not found.");
+            }
+
+            var uid = userIdClaim.Value;
+
+            var getUserByUidCommand = new GetUserByUidQuery(uid);
+            var userId = await _mediator.Send(getUserByUidCommand, cancellationToken);
+
+            accountDto.UserId = userId;
+
+
+            var command = new CreateAccountCommand(accountDto);
+            var res = await _mediator.Send(command, cancellationToken);
+            return Ok(res);
+        }
     }
 }

@@ -1,12 +1,12 @@
 using FinApp.Application.Interfaces;
 using FinApp.Application.Services;
-using FinApp.Domain.Entities;
-using FinApp.Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using System.Security.Claims;
 using Xunit;
 using System.Threading.Tasks;
+using FinApp.Domain.Interfaces;
+using FinApp.Domain.Entities;
 
 namespace FinApp.Tests.UserTests
 {

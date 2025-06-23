@@ -1,21 +1,21 @@
 ﻿using FinApp.Domain.Enums;
-using FinApp.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Transactions;
 
-namespace FinApp.Domain.Entities
+namespace FinApp.Application.Dtos
 {
-    public class Account : IEntity
+    public class AccountDto
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public AccountType AccountType { get; set; }
+        public string Name { get; set; }
         public double Balance { get; set; }
         public int UserId { get; set; }
-        public User User { get; set; }
-        public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
     }
 }

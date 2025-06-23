@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FinApp.Domain.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,14 @@ namespace FinApp.Domain.Entities
         public int TransactionId { get; set; }
         public Transaction Transaction { get; set; }
         public DateTime TransactionDate { get; set; }
+
+        public CategoryTransaction(int categoryId)
+        {
+            if (categoryId <= 0)
+                throw new DomainException("Invalid category ID.");
+
+            CategoryId = categoryId;
+            TransactionDate = DateTime.UtcNow;
+        }
     }
 }

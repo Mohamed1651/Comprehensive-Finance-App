@@ -1,10 +1,11 @@
-export const fetchUser = async (accessToken: string): Promise<any> => {
+import { fetchWithAuth } from "../../utils/fetchWithAuth";
+
+export const fetchUser = async (): Promise<any> => {
     try {
-        const response = await fetch("https://localhost:7233/api/user/me", {
+        const response = await fetchWithAuth("https://localhost:7233/api/user/me", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`,
             },
         });
 
@@ -20,13 +21,12 @@ export const fetchUser = async (accessToken: string): Promise<any> => {
     }
 }
 
-export const fetchUsers = async (accessToken: string): Promise<any> => {
+export const fetchUsers = async(): Promise<any> => {
     try {
-        const response = await fetch("https://localhost:7233/api/user", {
+        const response = await fetchWithAuth("https://localhost:7233/api/user", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`,
             },
         });
 

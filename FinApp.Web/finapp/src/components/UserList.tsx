@@ -15,7 +15,7 @@ const UserList: React.FC = () => {
                     return;
                 }
                 try {
-                    const result = await fetchUsers(accessToken); 
+                    const result = await fetchUsers(); 
                     setData(result);
                 } catch (err: any){
                     setError(err.message);
@@ -28,11 +28,7 @@ const UserList: React.FC = () => {
     if (!data) return <div>Loading...</div>;
     return (
         <div>
-            <ul style={{ listStyleType: 'disc', paddingLeft: '20px' }}>
-            {data.map((item: User) => (
-                <li>Name: {item.name} Email: {item.email}</li>
-            ))}
-          </ul>
+            Welkom {data[0].name}
         </div>
       );
 

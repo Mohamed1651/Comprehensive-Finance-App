@@ -3,10 +3,11 @@ import { AuthTokenContextType } from "../types/AuthTokenContextType";
 import { useMsal } from "@azure/msal-react";
 import { PublicClientApplication } from "@azure/msal-browser";
 import { loginRequest } from "../services/auth/AuthConfig";
+import { setAccessToken as setGlobalAccessToken } from "../utils/tokenProvider";
 
 const AuthTokenContext = createContext<AuthTokenContextType | undefined>(undefined);
 
-export const AuthTokenProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthTokenProvider: React.FC<{ children: React.ReactNode }> = (props) => {
     const { instance, accounts } = useMsal();
     const [accessToken, setAccessToken] = useState<string | null>(null);
 
@@ -20,15 +21,17 @@ export const AuthTokenProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                 account,
             });
             setAccessToken(response.accessToken);
+            setGlobalAccessToken(response.accessToken)
             console.log("response", response);  
         } catch (error) {
             console.error("Silent token acquisition failed", error);
             setAccessToken(null);
+            setGlobalAccessToken(null);
         }
     };
 
     useEffect(() => {
-        acquireToken(); // automatically fetch on mount
+        acquireToken();
     }, [accounts]);
 
     return (
@@ -38,7 +41,7 @@ export const AuthTokenProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                 refreshToken: acquireToken,
             }}
         >
-            {children}
+            {props.children}
         </AuthTokenContext.Provider>
     );
 }

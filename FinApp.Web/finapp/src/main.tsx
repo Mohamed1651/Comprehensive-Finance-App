@@ -17,5 +17,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 <App />
             </AuthTokenProvider>
         </MsalProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 )

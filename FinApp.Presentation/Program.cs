@@ -1,12 +1,7 @@
 using FinApp.Presentation;
-using FinApp.Domain.Entities;
-using FinApp.Domain.Interfaces;
-using FinApp.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.Data.SqlClient;
-using FinApp.Application.Interfaces;
-using FinApp.Application.Services;
 using FinApp.Infrastructure.Repositories;
 using FinApp.Application.Dtos;
 using FinApp.Presentation.Mappings;
@@ -17,6 +12,11 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using FinApp.Application.Commands.CreateUser;
+using FinApp.Domain.Interfaces;
+using FinApp.Domain.Entities;
+using FinApp.Domain.Aggregates;
+using FinApp.Infrastructure.Contexts;
+using FinApp.Domain.Events;
 
 namespace FinApp.Presentation;
 public class Program
@@ -25,7 +25,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         var configuration = builder.Configuration;
-        var oidcSettings = builder.Configuration.GetSection("OIDC").Get<OIDCSettingsDto>();
+        var oidcSettings = builder.Configuration.GetSection("OIDC").Get<OIDCSettingsDto>() ?? new OIDCSettingsDto();
         // Add services to the container.
         builder.Services.Configure<OIDCSettingsDto>(builder.Configuration.GetSection("OIDC"));
         builder.Services.AddHttpContextAccessor();
@@ -75,24 +75,29 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddMediatR(cfg =>
         {
-            cfg.RegisterServicesFromAssembly(typeof(CreateUserHandler).Assembly);
+            cfg.RegisterServicesFromAssemblies(typeof(CreateUserHandler).Assembly, typeof(AccountCreatedEventHandler).Assembly);
         });
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
-        builder.Services.AddScoped<IUserService, UserService>();
-        builder.Services.AddScoped<IRepository<User>, UserRepository>();
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        builder.Services.AddScoped<IRepository<AccountAggregate>, AccountRepository>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
+        builder.Services.AddDbContext<UserDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection")));
-
+        builder.Services.AddDbContext<FinanceDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection")));
         var app = builder.Build();
 
         app.UseCustomExceptionHandler();
 
         using (var scope = app.Services.CreateScope())
         {
-            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            dbContext.Database.Migrate();
+            var userdbContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
+            userdbContext.Database.Migrate();
+
+            var financedbContext = scope.ServiceProvider.GetRequiredService<FinanceDbContext>();
+            financedbContext.Database.Migrate();
         }
 
         app.UseSwagger();

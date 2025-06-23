@@ -1,27 +1,37 @@
-﻿using FinApp.Domain.Entities;
+﻿using AutoMapper;
+using FinApp.Application.Dtos;
+using FinApp.Domain.Aggregates;
+using FinApp.Domain.Entities;
 using FinApp.Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FinApp.Application.Commands.CreateUser
 {
-    public class CreateUserHandler : IRequestHandler<CreateUserCommand, int>
+    public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserDto>
     {
-        private IRepository<User> _userRepository;
+        private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepository;
 
-        public CreateUserHandler(IRepository<User> userRepository)
+        public CreateUserHandler(IMapper mapper, IUserRepository userRepository)
         {
+            _mapper = mapper;
             _userRepository = userRepository;
         }
-        public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<UserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = new User(request.Name, request.Email);
-            await _userRepository.AddAsync(user);
-            return user.Id;
+            var dto = request.UserDto;
+            var existingUser = await _userRepository.GetByUidAsync(dto.Uid);
+
+            if (existingUser != null)
+            {
+                return _mapper.Map<UserDto>(existingUser);
+            }
+
+            Settings settings = new Settings(0,"en", false, false);
+            var newUser = new UserAggregate(dto.Uid, dto.Name, dto.Email, settings);
+            await _userRepository.AddAsync(newUser);
+            var newUserDto = _mapper.Map<UserDto>(newUser);
+            return newUserDto;
         }
     }
 }

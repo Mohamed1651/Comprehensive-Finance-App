@@ -9,6 +9,7 @@ const UserDetails: React.FC = () => {
     const [data, setData] = useState<any>(null);
     const [error, setError] = useState<string | null>(null);
 
+
     useEffect(() => {
         const fetchData = async () => {
                 if (!accessToken) {
@@ -16,7 +17,7 @@ const UserDetails: React.FC = () => {
                     return;
                 }
                 try {
-                    const result = await fetchUser(accessToken); 
+                    const result = await fetchUser(); 
                     setData(result);
                 } catch (err: any){
                     setError(err.message);
@@ -28,7 +29,7 @@ const UserDetails: React.FC = () => {
     if (error) return <div>Error: {error}</div>;
     if (!data) return <div>Loading...</div>;
 
-    return <div>API Response: {data.name}</div>;
+    return <div></div>;
 };
 
 export default UserDetails;

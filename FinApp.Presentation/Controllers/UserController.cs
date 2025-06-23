@@ -1,13 +1,15 @@
 ﻿using AutoMapper;
+using FinApp.Application.Commands.CreateUser;
 using FinApp.Application.Dtos;
-using FinApp.Application.Interfaces;
 using FinApp.Application.Queries.GetUserById;
 using FinApp.Application.Queries.GetUsers;
 using FinApp.Domain.Entities;
+using FinApp.Domain.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Threading;
 
 namespace FinApp.Presentation.Controllers
 {
@@ -15,13 +17,11 @@ namespace FinApp.Presentation.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public UserController(IUserService userService, IMapper mapper, IMediator mediator)
+        public UserController(IMapper mapper, IMediator mediator)
         {
-            _userService = userService;
             _mapper = mapper;
             _mediator = mediator;
         }
@@ -36,15 +36,16 @@ namespace FinApp.Presentation.Controllers
 
         [HttpGet("me")]
         [Authorize(Roles = "User")]
-        public ActionResult GetCurrentUser()
+        public async Task<ActionResult<UserDto>> GetCurrentUser(CancellationToken cancellationToken)
         {
-            ClaimsPrincipal user = HttpContext.User;
-            return Ok(new
-            {
-                Name = user.FindFirst("name")?.Value,
-                Email = user.FindFirst("preferred_username")?.Value,
-                Roles = user.FindAll(ClaimTypes.Role).Select(c => c.Value).ToList()
-            });
+            var Uid = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var Name = User.FindFirst("name")?.Value;
+            var Email = User.FindFirst("preferred_username")?.Value;
+            var dto = new UserDto(0, Uid, Name, Email);
+            var command = new CreateUserCommand(dto);
+            var loggedInUser = await _mediator.Send(command, cancellationToken);
+
+            return Ok(loggedInUser);
         }
 
         // GET: api/<UserController>
@@ -65,38 +66,6 @@ namespace FinApp.Presentation.Controllers
             var query = new GetUserByIdQuery(id);
             var userDto = await _mediator.Send(query, cancellationToken);
             return Ok(userDto);
-        }
-
-        // POST api/<UserController>
-        [HttpPost]
-        [Authorize]
-        public async Task<ActionResult> Post([FromBody] UserDto dto)
-        {
-            User user = _mapper.Map<User>(dto);
-            await _userService.CreateUser(user);
-            return Created();
-        }
-
-        // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        [Authorize]
-        public async Task<ActionResult> Put(int id, [FromBody] UserDto dto)
-        {
-            User userToUpdate = _mapper.Map<User>(dto);
-            userToUpdate.Id = id;
-
-            await _userService.UpdateUser(userToUpdate);
-
-            return NoContent();
-        }
-
-        // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
-        [Authorize]
-        public async Task<ActionResult> Delete(int id)
-        {
-            await _userService.DeleteUser(id);
-            return NoContent();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using FinApp.Application.Dtos;
+﻿using AutoMapper;
+using FinApp.Application.Dtos;
+using FinApp.Domain.Aggregates;
 using FinApp.Domain.Entities;
 using FinApp.Domain.Interfaces;
 using MediatR;
@@ -12,23 +14,20 @@ namespace FinApp.Application.Queries.GetUsers
 {
     public class GetUsersHandler : IRequestHandler<GetUsersQuery, List<UserDto>>
     {
-        private readonly IRepository<User> _userRepository;
+        private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepository;
 
-        public GetUsersHandler(IRepository<User> userRepository)
+        public GetUsersHandler(IMapper mapper, IUserRepository userRepository)
         {
+            _mapper = mapper;
             _userRepository = userRepository;
         }
 
         public async Task<List<UserDto>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {
             var users = await _userRepository.GetAllAsync();
-            List<UserDto> userDtos = new List<UserDto>();
-            foreach(var user in users)
-            {
-                UserDto userDto = new UserDto(user.Id, user.Name, user.Email);
-                userDtos.Add(userDto);
-            }
-            return userDtos;
+            var dtos = _mapper.Map<List<UserDto>>(users);
+            return dtos;
         }
     }
 }
