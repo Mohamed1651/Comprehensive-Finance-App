@@ -21,7 +21,8 @@ namespace FinApp.Application.Commands.CreateAccount
             var dto = request.AccountDto;
             var accountAggregate = new AccountAggregate(dto.Name, dto.AccountType, dto.Balance, dto.UserId, new List<Transaction>());
             await _accountRepository.AddAsync(accountAggregate);
-            return _mapper.Map<AccountDto>(accountAggregate);
+            var mappeditem = _mapper.Map<AccountDto>(accountAggregate);
+            return mappeditem;
         }
     }
 }

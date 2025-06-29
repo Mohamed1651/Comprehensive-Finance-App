@@ -27,6 +27,11 @@ namespace FinApp.Domain.ValueObjects
             return new Email(normalized);
         }
 
+        public bool EqualsString(string other)
+        {
+            return string.Equals(Value, other, StringComparison.OrdinalIgnoreCase);
+        }
+
         public override string ToString()
         {
             return Value;
